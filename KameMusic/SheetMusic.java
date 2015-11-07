@@ -2,15 +2,13 @@ package KameMusic;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.event.EventHandler;
-<<<<<<< HEAD
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.*;
 import java.io.*;
-=======
-import java.util.ArrayList;
->>>>>>> 52bfb800838a326de680ae2867765c5ee7919801
 
 /**
 *
@@ -18,6 +16,7 @@ import java.util.ArrayList;
 public class SheetMusic {
 	private Pane _sheetPane;
 	private ArrayList<NoteLine> _staffs;
+	private boolean[] notesPressed;
 	private NoteLine[] _staffLine;
 	private NoteSpace[] _staffSpace;
 	private double _x;
@@ -32,11 +31,16 @@ public class SheetMusic {
 		this.makeStaffs(8);
 		this.makeClefs();
 		this.makeKeySignature();
+		_sheetPane.setFocusTraversable(true);
+		_sheetPane.requestFocus();
+		_sheetPane.setOnKeyPressed(new KeyHandler());
 
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
+
+		notesPressed=new boolean [64];
 	}
-	
+
 	private void makeKeySignature() {
 		double x = 0;
 		double y = 0;
@@ -87,9 +91,28 @@ public class SheetMusic {
 		}
 	}
 
+	private class KeyHandler implements EventHandler<KeyEvent> {
+		
+		/*converts the key pressed into the corresponding note value and plays that note*/
+		@Override
+		public void handle(KeyEvent e) {
+
+			String keyboard="qasedrftghujiklp;[']\\";
+			System.out.println(e);
+			int z=keyboard.indexOf(e.getText())+40;
+			try {
+				MidiHelper.play(z);
+			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
+			
+			e.consume();
+		}
+	}
+
+	/*converts the y position into the corresponding note*/
 	public int getNote(int y)
 	{
-		int z=y;
+		int z=64-(3/2)*(y%(Constants.SHEET_HEIGHT/9))/(Constants.SPACE_HEIGHT/2);
+		System.out.println(y+"->"+z);
 		return z;
 	}
 	

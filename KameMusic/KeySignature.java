@@ -45,7 +45,7 @@ public class KeySignature {
 	public Pane makeBbMajor() {
 		Pane BbMajorPane = new Pane();
 		
-		BbMajorPane.getChildren().addAll(this.makeFlat(), );
+		//BbMajorPane.getChildren().addAll(this.makeFlat(), );
 		return BbMajorPane;
 	}
 }

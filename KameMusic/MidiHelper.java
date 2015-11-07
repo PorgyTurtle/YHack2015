@@ -14,6 +14,6 @@ public class MidiHelper{
 		MidiChannel[] chan= synth.getChannels();
 		Instrument[] instr= synth.getDefaultSoundbank().getInstruments();
 		boolean succ=synth.loadInstrument(instr[0]);
-		chan[0].noteOn(nValue, 93);
+		chan[nValue %chan.length].noteOn(nValue, 93);
 	}
 }
