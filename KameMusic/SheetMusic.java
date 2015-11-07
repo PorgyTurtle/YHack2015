@@ -3,7 +3,14 @@ package KameMusic;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+<<<<<<< HEAD
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.util.*;
+import java.io.*;
+=======
 import java.util.ArrayList;
+>>>>>>> 52bfb800838a326de680ae2867765c5ee7919801
 
 /**
 *
@@ -65,6 +72,10 @@ public class SheetMusic {
 		public void handle(MouseEvent e) {
 			_x = e.getSceneX();
 			_y = e.getSceneY();
+			try {
+				MidiHelper.play(getNote((int)_y));
+			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
+			
 			// System.out.println("x = " + _x);
 			// System.out.println("y = " + _y);
 			// boolean isInStaffWidth = _x > _staffLine[0].getX()
@@ -74,6 +85,12 @@ public class SheetMusic {
 
 			e.consume();
 		}
+	}
+
+	public int getNote(int y)
+	{
+		int z=y;
+		return z;
 	}
 	
 	/*

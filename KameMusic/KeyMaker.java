@@ -25,7 +25,7 @@ public class KeyMaker {
 		Pane gMajorPane = new Pane();
 		Pane sharpPane = this.makeSharp();
 		double x = 0;
-		double y = 2;
+		double y = -12;
 		sharpPane.setTranslateX(x);
 		sharpPane.setTranslateY(y);
 		gMajorPane.getChildren().add(sharpPane);
@@ -36,7 +36,7 @@ public class KeyMaker {
 		Pane dMajorPane = new Pane();
 		Pane sharpPane = this.makeSharp();
 		double x = 9;
-		double y = -11;
+		double y = 2;
 		sharpPane.setTranslateX(x);
 		sharpPane.setTranslateY(y);
 		dMajorPane.getChildren().addAll(this.makeGMajor(), sharpPane);
@@ -47,7 +47,7 @@ public class KeyMaker {
 		Pane aMajorPane = new Pane();
 		Pane sharpPane = this.makeSharp();
 		double x = 18;
-		double y = 5;
+		double y = -15;
 		sharpPane.setTranslateX(x);
 		sharpPane.setTranslateY(y);
 		aMajorPane.getChildren().addAll(this.makeDMajor(), sharpPane);
@@ -58,7 +58,7 @@ public class KeyMaker {
 		Pane eMajorPane = new Pane();
 		Pane sharpPane = this.makeSharp();
 		double x = 27;
-		double y = -8;
+		double y = -3;
 		sharpPane.setTranslateX(x);
 		sharpPane.setTranslateY(y);
 		eMajorPane.getChildren().addAll(this.makeAMajor(), sharpPane);

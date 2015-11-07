@@ -6,6 +6,14 @@
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" 
      integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
     <link rel="stylesheet" href="./static/homepage.css" type="text/css" />
+
+    <script>
+    function activate(name) {
+        document.getElementByClassName("class").class = "";
+        else document.getElementById(name).class = "active";
+    }
+
+</script>
     </head>
 
     <body>
@@ -25,9 +33,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home</a></li>
-                        <li><a href="/about" target="">About</a></li>
-                        <li><a href="/sign_up" target="">Sign Up</a></li>
+                        <li id="home" class="active"><a href="javascript:activate('home');"><a href="/">Home</a></a><a href="/"></li>
+                        <li id="about" ><a href="javascript:activate('about');"><a href="/about" target="">About</a></a></li>
+                        <li id="sign_up" ><a href="javascript:activate('sign_up');"><a href="/sign_up" target="">Sign Up</a></a></li>
                     </ul>
                 </div>
             </div>
