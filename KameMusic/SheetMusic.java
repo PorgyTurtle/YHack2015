@@ -5,6 +5,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.util.*;
+import java.io.*;
 
 /**
 *
@@ -39,6 +41,10 @@ public class SheetMusic {
 		public void handle(MouseEvent e) {
 			_x = e.getSceneX();
 			_y = e.getSceneY();
+			try {
+				MidiHelper.play(getNote((int)_y));
+			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
+			
 			// System.out.println("x = " + _x);
 			// System.out.println("y = " + _y);
 			// boolean isInStaffWidth = _x > _staffLine[0].getX()
@@ -48,6 +54,12 @@ public class SheetMusic {
 
 			e.consume();
 		}
+	}
+
+	public int getNote(int y)
+	{
+		int z=y;
+		return z;
 	}
 	
 	/*
