@@ -3,36 +3,67 @@ package KameMusic;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+<<<<<<< HEAD
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.*;
 import java.io.*;
+=======
+import java.util.ArrayList;
+>>>>>>> 52bfb800838a326de680ae2867765c5ee7919801
 
 /**
 *
 */
 public class SheetMusic {
 	private Pane _sheetPane;
-	// private ArrayList<NoteLine> _staffs;
+	private ArrayList<NoteLine> _staffs;
 	private NoteLine[] _staffLine;
 	private NoteSpace[] _staffSpace;
-	private BarLine[] _barLine;
 	private double _x;
 	private double _y;
-	private Clef _clefMaker;
+	private KeyMaker _keyMaker;
 
 	public SheetMusic() {
+		_staffs = new ArrayList<NoteLine>();
+		_keyMaker = new KeyMaker();
+		
 		this.makeSheetPane();
 		this.makeStaffs(8);
+		this.makeClefs();
+		this.makeKeySignature();
 
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
 	}
+	
+	private void makeKeySignature() {
+		double x = 0;
+		double y = 0;
+		Pane keyPane;
+		for (int n = 0; n < _staffs.size(); n++) {
+			keyPane = _keyMaker.makeFMajor();
+			x = _staffs.get(n).getNoteLine().getX();
+			y = _staffs.get(n).getNoteLine().getY();
+			keyPane.setTranslateX(x);
+			keyPane.setTranslateY(y);
+			_sheetPane.getChildren().add(keyPane);
+		}
+	}
 
 	private void makeClefs() {
-		_clefMaker = new Clef();
-		ImageView trebleClef = _clefMaker.makeTreble();
-		_sheetPane.getChildren().addAll(trebleClef);
+		Clef clefMaker = new Clef();
+		Pane trebleClef;
+		double x = 0;
+		double y = 0;
+		for (int n = 0; n < _staffs.size(); n++) {
+			trebleClef = clefMaker.makeTreble();
+			x = _staffs.get(n).getNoteLine().getX();
+			y = _staffs.get(n).getNoteLine().getY();
+			trebleClef.setTranslateX(x);
+			trebleClef.setTranslateY(y - Constants.SPACE_HEIGHT);
+			_sheetPane.getChildren().add(trebleClef);
+		}
 	}
 
 	private class ClickHandler implements EventHandler<MouseEvent> {
@@ -79,6 +110,10 @@ public class SheetMusic {
 	}
 
 	private void makeStaffs(int numberOfStaffs) {
+//		this.makeBarLines(Constants.SHEET_WIDTH/20,
+//		  		  		  Constants.SHEET_HEIGHT/(numberOfStaffs + 1) * 
+//		  		  		  n + 40);
+		
 		for(int n = 0; n < numberOfStaffs; n++) {
 			this.makeStaffLine(Constants.STAFF_WIDTH,
 							   Constants.SHEET_WIDTH/20,
@@ -87,8 +122,11 @@ public class SheetMusic {
 							   	Constants.SHEET_WIDTH/20,
 							   	Constants.SHEET_HEIGHT/(numberOfStaffs + 1)
 							   		 * n + 40 +	Constants.LINE_HEIGHT);
-			this.makeBarLines(Constants.SHEET_WIDTH/20,
-							  Constants.SHEET_HEIGHT/(numberOfStaffs + 1) * n + 40);
+//			if (n > 0) {
+				this.makeBarLines(Constants.SHEET_WIDTH/20,
+						  		  Constants.SHEET_HEIGHT/(numberOfStaffs + 1) * 
+						  		  n + 40);
+//			}
 		}
 	}
 
@@ -100,6 +138,7 @@ public class SheetMusic {
 			y += Constants.SPACE_HEIGHT + Constants.LINE_HEIGHT;
 			_sheetPane.getChildren().addAll(_staffLine[n].getNoteLine());
 		}
+		_staffs.add(_staffLine[0]);
 	}
 
 	private void makeStaffSpace(double length, double x, double y) {
