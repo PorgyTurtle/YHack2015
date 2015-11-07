@@ -46,10 +46,10 @@ public class SheetMusic {
 		double y = 0;
 		Pane keyPane;
 		for (int n = 0; n < _staffs.size(); n++) {
-			keyPane = _keyMaker.makeFMajor();
+			keyPane = _keyMaker.makeBMajor();
 			x = _staffs.get(n).getNoteLine().getX();
 			y = _staffs.get(n).getNoteLine().getY();
-			keyPane.setTranslateX(x);
+			keyPane.setTranslateX(x + 22);
 			keyPane.setTranslateY(y);
 			_sheetPane.getChildren().add(keyPane);
 		}
