@@ -15,9 +15,11 @@ public class SheetMusic {
 	private NoteSpace[] _staffSpace;
 	private double _x;
 	private double _y;
+	private KeyMaker _keyMaker;
 
 	public SheetMusic() {
 		_staffs = new ArrayList<NoteLine>();
+		_keyMaker = new KeyMaker();
 		
 		this.makeSheetPane();
 		this.makeStaffs(8);
@@ -29,16 +31,15 @@ public class SheetMusic {
 	}
 	
 	private void makeKeySignature() {
-		KeySignature keyMaker = new KeySignature();
-		Pane keyPane;
 		double x = 0;
 		double y = 0;
+		Pane keyPane;
 		for (int n = 0; n < _staffs.size(); n++) {
-			keyPane = keyMaker.makeFMajor();
+			keyPane = _keyMaker.makeFMajor();
 			x = _staffs.get(n).getNoteLine().getX();
 			y = _staffs.get(n).getNoteLine().getY();
-			keyPane.setTranslateX(x + 22);
-			keyPane.setTranslateY(y + 2);
+			keyPane.setTranslateX(x);
+			keyPane.setTranslateY(y);
 			_sheetPane.getChildren().add(keyPane);
 		}
 	}
