@@ -8,7 +8,7 @@ public class Clef {
 	public Clef() {
 	}
 
-	public ImageView makeTrebleClef() {
+	public ImageView makeTreble() {
 		Image image = new Image("TrebleClef.png");
 		ImageView iv1 = new ImageView();
 		iv1.setImage(image);

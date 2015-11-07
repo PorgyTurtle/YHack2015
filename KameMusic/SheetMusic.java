@@ -3,6 +3,8 @@ package KameMusic;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
 *
@@ -27,7 +29,8 @@ public class SheetMusic {
 
 	private void makeClefs() {
 		_clefMaker = new Clef();
-
+		ImageView trebleClef = _clefMaker.makeTreble();
+		_sheetPane.getChildren().addAll(trebleClef);
 	}
 
 	private class ClickHandler implements EventHandler<MouseEvent> {
