@@ -38,6 +38,10 @@ public class SheetMusic {
 		_sheetPane.requestFocus();
 		_sheetPane.setOnKeyPressed(new KeyHandler());
 
+		_sheetPane.setFocusTraversable(false);
+		_sheetPane.requestFocus();
+		_sheetPane.setOnKeyPressed(new KeyHandler());
+
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
 	}
