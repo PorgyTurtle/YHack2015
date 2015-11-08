@@ -10,6 +10,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import java.util.*;
+import java.io.*;
 
 
 /**
@@ -21,9 +23,20 @@ public class PaneOrganizer {
 	private double _x;
 	private double _y;
 	private Timeline _timeline;
-	public static boolean[] notesPressed;
+	public static boolean[] notesisPlaying;
+	public boolean isPlaying;
+	double timer;
+	public PriorityQueue<Note> arePlaying;
+	public PriorityQueue<Note> willBePlayed;
 
 	public PaneOrganizer() {
+		arePlaying=new PriorityQueue<Note>();
+		isPlaying=false;
+		notesisPlaying= new boolean[1024];
+		for(int i=0; i<PaneOrganizer.notesisPlaying.length; i++)
+			{notesisPlaying[i]=false;}
+		try {MidiHelper.start();}
+		catch (javax.sound.midi.MidiUnavailableException mu) {;}
 		_root = new BorderPane();
 		_sheetMusic = new SheetMusic();
 		_root.setCenter(_sheetMusic.getSheetPane());
@@ -37,7 +50,29 @@ public class PaneOrganizer {
 	public BorderPane getRoot() {
 		return _root;
 	}
-	
+
+	public void getToPos(int sTime)
+	{
+		timer=sTime;
+		arePlaying=new PriorityQueue<Note>();
+		willBePlayed=new PriorityQueue<Note>();
+		Note.compMode(true);
+		for(Note n : SheetMusic.notes)
+		{
+			if(n.time<=sTime) willBePlayed.add(n);
+		}
+	}
+
+	public void playMusic()
+	{
+		isPlaying=true;
+	}
+
+	public void stopMusic()
+	{
+		isPlaying=false;
+		MidiHelper.synth.getChannels()[0].allNotesOff();
+	}
 	
 	/*
 	* This class operates the game at the end of each Duration.
@@ -49,20 +84,37 @@ public class PaneOrganizer {
 		*/
 		@Override
 		public void handle(ActionEvent event) {
-			System.out.println("aaa");
-			for(int i=0; i<PaneOrganizer.notesPressed.length; i++)
+			
+			if(isPlaying)
 			{
-				if(PaneOrganizer.notesPressed[i])
-				{	try {
-						MidiHelper.play(i);
-					} 	catch (javax.sound.midi.MidiUnavailableException mu) {;}
-					PaneOrganizer.notesPressed[i]=false;
-				} else {
+				Note.compMode(true);
+				Note n=willBePlayed.peek();
+				while(n.time<=timer)
+				{
+					willBePlayed.remove();
 					try {
-						MidiHelper.stop(i);
+						MidiHelper.play(n.note);
 					} 	catch (javax.sound.midi.MidiUnavailableException mu) {;}
+					Note.compMode(false);
+					arePlaying.add(n);
+
+					Note.compMode(true);
+					n=willBePlayed.peek();
+				}
+
+				Note.compMode(false);
+				Note m=arePlaying.peek();
+				while(m.time+m.length<=timer)
+				{
+					m=arePlaying.remove();
+					try {
+						MidiHelper.stop(m.note);
+					} 	catch (javax.sound.midi.MidiUnavailableException mu) {;}
+					m=arePlaying.peek();
 				}
 			}
+
+			if(false){_timeline.stop();}
 			
 		}
 	}
@@ -71,8 +123,9 @@ public class PaneOrganizer {
 	* This method sets up the Keyframe and Timeline.
 	*/
 	private void setUpTimeline() {
+		System.out.println("bbb");
 		KeyFrame kf = new KeyFrame(Duration.millis(Constants.DURATION), new TimeHandler());
 		_timeline = new Timeline(kf);
-		_timeline.setCycleCount(1);
+		_timeline.setCycleCount(Animation.INDEFINITE);
 	}
 }
