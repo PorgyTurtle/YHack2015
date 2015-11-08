@@ -34,6 +34,11 @@ public class SheetMusic {
 		this.makeStaffs(8);
 		this.makeClefs();
 		this.makeKeySignature();
+		this.displayTimeSignature();
+
+		_sheetPane.setFocusTraversable(false);
+		_sheetPane.requestFocus();
+		_sheetPane.setOnKeyPressed(new KeyHandler());
 
 		_sheetPane.setFocusTraversable(true);
 		_sheetPane.setOnKeyPressed(new KeyPressHandler());
@@ -49,7 +54,7 @@ public class SheetMusic {
 		double y = 0;
 		Pane keyPane;
 		for (int n = 0; n < _staffs.size(); n++) {
-			keyPane = _keyMaker.makeBMajor();
+			keyPane = _keyMaker.makeAMajor();
 			x = _staffs.get(n).getNoteLine().getX();
 			y = _staffs.get(n).getNoteLine().getY();
 			keyPane.setTranslateX(x + 22);
@@ -159,9 +164,6 @@ public class SheetMusic {
 	}
 
 	private void makeStaffs(int numberOfStaffs) {
-//		this.makeBarLines(Constants.SHEET_WIDTH/20,
-//		  		  		  Constants.SHEET_HEIGHT/(numberOfStaffs + 1) * 
-//		  		  		  n + 40);
 		
 		for(int n = 0; n < numberOfStaffs; n++) {
 			this.makeStaffLine(Constants.STAFF_WIDTH,
@@ -207,5 +209,15 @@ public class SheetMusic {
 			x += Constants.STAFF_WIDTH / 8.0;
 			_sheetPane.getChildren().addAll(barLine[n].getBarLine());
 		}
+	}
+	
+	private void displayTimeSignature() {
+		TimeSignatureMaker timeSignatureMaker = new TimeSignatureMaker();
+		Pane timePane = timeSignatureMaker.makeTimeSignature();
+		double x = 105;
+		double y = 40;
+		timePane.setTranslateX(x);
+		timePane.setTranslateY(y);
+		_sheetPane.getChildren().add(timePane);
 	}
 }
