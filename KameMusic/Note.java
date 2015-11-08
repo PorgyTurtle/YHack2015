@@ -12,6 +12,4 @@ public class Note {
 	{
 		time=t; note=n; length=l; loudness=d;
 	}
-
-
 }

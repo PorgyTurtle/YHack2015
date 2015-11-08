@@ -22,6 +22,7 @@ public class SheetMusic {
 	private double _x;
 	private double _y;
 	private KeyMaker _keyMaker;
+	private ArrayList<Note> notes= new ArrayList<Note>();
 
 	public SheetMusic() {
 		_staffs = new ArrayList<NoteLine>();
@@ -31,14 +32,13 @@ public class SheetMusic {
 		this.makeStaffs(8);
 		this.makeClefs();
 		this.makeKeySignature();
-		_sheetPane.setFocusTraversable(true);
+
+		_sheetPane.setFocusTraversable(false);
 		_sheetPane.requestFocus();
 		_sheetPane.setOnKeyPressed(new KeyHandler());
 
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
-
-		notesPressed=new boolean [64];
 	}
 
 	private void makeKeySignature() {
@@ -71,13 +71,12 @@ public class SheetMusic {
 	}
 
 	private class ClickHandler implements EventHandler<MouseEvent> {
-
 		@Override
 		public void handle(MouseEvent e) {
 			_x = e.getSceneX();
 			_y = e.getSceneY();
 			try {
-				MidiHelper.play(getNote((int)_y));
+				MidiHelper.play(SheetMusic.getNote((int)_y));
 			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
 			
 			// System.out.println("x = " + _x);
@@ -99,23 +98,25 @@ public class SheetMusic {
 
 			String keyboard="qasedrftghujiklp;[']\\";
 			System.out.println(e);
-			int z=keyboard.indexOf(e.getText())+40;
-			try {
-				MidiHelper.play(z);
-			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
+			int z=keyboard.indexOf(e.getText());
+			if(z>=0) PaneOrganizer.notesPressed[z]=true;
 			
 			e.consume();
 		}
 	}
 
 	/*converts the y position into the corresponding note*/
-	public int getNote(int y)
+	public static int getNote(int y)
 	{
 		int z=64-(3/2)*(y%(Constants.SHEET_HEIGHT/9))/(Constants.SPACE_HEIGHT/2);
 		System.out.println(y+"->"+z);
 		return z;
 	}
 	
+	public static int getPos(int x, int y)
+	{
+		return x+Constants.SHEET_WIDTH*(y/(SHEET_HEIGHT/9));
+	}
 	/*
 	* This method gets and returns the _sheetPane.
 	*/
