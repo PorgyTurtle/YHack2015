@@ -10,8 +10,6 @@ public class Note {
 	public int time, note, length, loudness;
 	public Note(int t, int n, int l, int d)
 	{
-		time, note, length, loudness;
+		time=t; note=n; length=l; loudness=d;
 	}
-
-
 }

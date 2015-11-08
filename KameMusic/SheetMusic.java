@@ -2,8 +2,13 @@ package KameMusic;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.event.EventHandler;
-import java.util.ArrayList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.util.*;
+import java.io.*;
 
 /**
 *
@@ -11,11 +16,13 @@ import java.util.ArrayList;
 public class SheetMusic {
 	private Pane _sheetPane;
 	private ArrayList<NoteLine> _staffs;
+	private boolean[] notesPressed;
 	private NoteLine[] _staffLine;
 	private NoteSpace[] _staffSpace;
 	private double _x;
 	private double _y;
 	private KeyMaker _keyMaker;
+	private ArrayList<Note> notes= new ArrayList<Note>();
 
 	public SheetMusic() {
 		_staffs = new ArrayList<NoteLine>();
@@ -27,10 +34,14 @@ public class SheetMusic {
 		this.makeKeySignature();
 		this.displayTimeSignature();
 
+		_sheetPane.setFocusTraversable(false);
+		_sheetPane.requestFocus();
+		_sheetPane.setOnKeyPressed(new KeyHandler());
+
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
 	}
-	
+
 	private void makeKeySignature() {
 		double x = 0;
 		double y = 0;
@@ -61,13 +72,12 @@ public class SheetMusic {
 	}
 
 	private class ClickHandler implements EventHandler<MouseEvent> {
-
 		@Override
 		public void handle(MouseEvent e) {
 			_x = e.getSceneX();
 			_y = e.getSceneY();
 			try {
-				MidiHelper.play(getNote((int)_y));
+				MidiHelper.play(SheetMusic.getNote((int)_y));
 			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
 			
 			// System.out.println("x = " + _x);
@@ -81,12 +91,33 @@ public class SheetMusic {
 		}
 	}
 
-	public int getNote(int y)
+	private class KeyHandler implements EventHandler<KeyEvent> {
+		
+		/*converts the key pressed into the corresponding note value and plays that note*/
+		@Override
+		public void handle(KeyEvent e) {
+
+			String keyboard="qasedrftghujiklp;[']\\";
+			System.out.println(e);
+			int z=keyboard.indexOf(e.getText());
+			if(z>=0) PaneOrganizer.notesPressed[z]=true;
+			
+			e.consume();
+		}
+	}
+
+	/*converts the y position into the corresponding note*/
+	public static int getNote(int y)
 	{
-		int z=y;
+		int z=64-(3/2)*(y%(Constants.SHEET_HEIGHT/9))/(Constants.SPACE_HEIGHT/2);
+		System.out.println(y+"->"+z);
 		return z;
 	}
 	
+	public static int getPos(int x, int y)
+	{
+		return x+Constants.SHEET_WIDTH*(y/(SHEET_HEIGHT/9));
+	}
 	/*
 	* This method gets and returns the _sheetPane.
 	*/
