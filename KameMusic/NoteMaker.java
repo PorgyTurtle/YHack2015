@@ -11,9 +11,9 @@ public class NoteMaker {
 	public NoteMaker() {
 	}
 	
-	public Ellipse makeWholeNote(int x, int y) {
-		Ellipse wholeNote = new Ellipse(x, y, 10, 10);
-		wholeNote.setFill(Color.BLUE);
-		return wholeNote;
+	public Ellipse makeQuarterNote(int x, int y) {
+		Ellipse quarterNote = new Ellipse(x, y, 10, 10);
+		quarterNote.setFill(Color.BLUE);
+		return quarterNote;
 	}
 }

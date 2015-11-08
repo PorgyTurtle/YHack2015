@@ -3,14 +3,7 @@ package KameMusic;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
-<<<<<<< HEAD
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.util.*;
-import java.io.*;
-=======
 import java.util.ArrayList;
->>>>>>> 52bfb800838a326de680ae2867765c5ee7919801
 
 /**
 *
@@ -32,6 +25,7 @@ public class SheetMusic {
 		this.makeStaffs(8);
 		this.makeClefs();
 		this.makeKeySignature();
+		this.displayTimeSignature();
 
 		ClickHandler clickHandler = new ClickHandler();
 		_sheetPane.addEventHandler(MouseEvent.MOUSE_CLICKED, clickHandler);
@@ -42,7 +36,7 @@ public class SheetMusic {
 		double y = 0;
 		Pane keyPane;
 		for (int n = 0; n < _staffs.size(); n++) {
-			keyPane = _keyMaker.makeBMajor();
+			keyPane = _keyMaker.makeAMajor();
 			x = _staffs.get(n).getNoteLine().getX();
 			y = _staffs.get(n).getNoteLine().getY();
 			keyPane.setTranslateX(x + 22);
@@ -110,9 +104,6 @@ public class SheetMusic {
 	}
 
 	private void makeStaffs(int numberOfStaffs) {
-//		this.makeBarLines(Constants.SHEET_WIDTH/20,
-//		  		  		  Constants.SHEET_HEIGHT/(numberOfStaffs + 1) * 
-//		  		  		  n + 40);
 		
 		for(int n = 0; n < numberOfStaffs; n++) {
 			this.makeStaffLine(Constants.STAFF_WIDTH,
@@ -158,5 +149,15 @@ public class SheetMusic {
 			x += Constants.STAFF_WIDTH / 8.0;
 			_sheetPane.getChildren().addAll(barLine[n].getBarLine());
 		}
+	}
+	
+	private void displayTimeSignature() {
+		TimeSignatureMaker timeSignatureMaker = new TimeSignatureMaker();
+		Pane timePane = timeSignatureMaker.makeTimeSignature();
+		double x = 105;
+		double y = 40;
+		timePane.setTranslateX(x);
+		timePane.setTranslateY(y);
+		_sheetPane.getChildren().add(timePane);
 	}
 }
