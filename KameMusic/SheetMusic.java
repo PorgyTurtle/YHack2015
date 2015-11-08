@@ -38,7 +38,6 @@ public class SheetMusic {
 
 		_sheetPane.setFocusTraversable(false);
 		_sheetPane.requestFocus();
-		_sheetPane.setOnKeyPressed(new KeyHandler());
 
 		_sheetPane.setFocusTraversable(true);
 		_sheetPane.setOnKeyPressed(new KeyPressHandler());
@@ -84,6 +83,8 @@ public class SheetMusic {
 			_x = e.getSceneX();
 			_y = e.getSceneY();
 			int z=SheetMusic.getNote((int)_y);
+			NoteMaker.makeWholeNote((int)_x, (int)_y);
+			App.organizer.getToPos(SheetMusic.getPos((int)_x,(int)_y));
 			try {MidiHelper.play(z);
 			} catch (javax.sound.midi.MidiUnavailableException mu) {;}
 			
@@ -108,8 +109,11 @@ public class SheetMusic {
 			String keyboard="`1qw3e4rt6y7u8io0p-[]azxdcfvgbnjmk,.;/'";
 			//System.out.println(e);
 			int z=keyboard.indexOf(e.getText());
-			if(z>=0 && !PaneOrganizer.notesisPlaying[z]){
-				PaneOrganizer.notesisPlaying[z]=true;
+			if(e.getCode().toString()=="ENTER") App.organizer.saveMidiFile("my midi file");
+			if(e.getCode().toString()=="SPACE" && !App.organizer.isPlaying) App.organizer.playMusic();
+			else App.organizer.stopMusic();
+			if(z>=0 && !App.organizer.notesisPlaying[z]){
+				App.organizer.notesisPlaying[z]=true;
 				try {MidiHelper.play(z+40);
 					} 	catch (javax.sound.midi.MidiUnavailableException mu) {;}}
 			
@@ -127,7 +131,7 @@ public class SheetMusic {
 			//System.out.println(e);
 			int z=keyboard.indexOf(e.getText());
 			if(z>=0){
-				PaneOrganizer.notesisPlaying[z]=false;
+				App.organizer.notesisPlaying[z]=false;
 				try {MidiHelper.stop(z+40);
 					} 	catch (javax.sound.midi.MidiUnavailableException mu) {;}}
 			

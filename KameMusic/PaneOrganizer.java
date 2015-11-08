@@ -128,4 +128,20 @@ public class PaneOrganizer {
 		_timeline = new Timeline(kf);
 		_timeline.setCycleCount(Animation.INDEFINITE);
 	}
+
+	public static void saveMidiFile(String filename)
+	{
+		MidiFile mf = new MidiFile();
+
+		// Insert some notes
+		for(Note n : SheetMusic.notes)
+		{
+			mf.noteOnOffNow (n.time, n.length, n.note, 93);
+		}
+
+		try{mf.writeToFile (filename+".mid");}catch(IOException ex){;}
+
+	}
+
 }
+

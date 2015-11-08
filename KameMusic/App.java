@@ -13,11 +13,12 @@ import javafx.scene.Scene;
 
 public class App extends Application {
 
+  public static PaneOrganizer organizer;
     @Override
 	public void start(Stage stage) {
 		// Create top-level object, set up the scene, and show the stage here.
     	stage.setTitle("KameMusic");
-    	PaneOrganizer organizer = new PaneOrganizer();
+    	organizer = new PaneOrganizer();
     	Scene scene = new Scene(organizer.getRoot());
     	stage.setScene(scene);
     	stage.show();
